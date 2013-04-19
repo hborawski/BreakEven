@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context=".PaidActivity" >
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Just Got Paid" />
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	    
+	    <TextView 
+	        android:id="@+id/label"
+	        android:layout_width="0dp"
+	        android:layout_weight=".25"
+	        android:layout_height="wrap_content"
+	        android:text="Amount" />
+	
+	    <EditText
+	        android:id="@+id/paycheck"
+	        android:windowSoftInputMode="stateVisible"
+	        android:inputType="number"
+	        android:layout_width="0dp"
+	        android:layout_weight=".55"
+	        android:layout_height="wrap_content"/>
+
+	    
+	    <Button 
+	        android:id="@+id/add"
+	        android:text="Add"
+	        android:layout_weight=".2"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:onClick="add"
+	        />
+    </LinearLayout>
+    	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	    	    <TextView 
+	        android:id="@+id/label"
+	        android:layout_width="0dp"
+	        android:layout_weight=".2"
+	        android:layout_height="wrap_content"
+	        android:text="For: " />
+	    
+    		<EditText
+	        android:id="@+id/categoryField"
+	        android:windowSoftInputMode="stateVisible"
+	        android:layout_width="0dp"
+	        android:layout_weight=".8"
+	        android:layout_height="wrap_content"/>
+    		</LinearLayout>
+
+</LinearLayout>

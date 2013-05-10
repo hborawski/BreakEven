@@ -21,7 +21,7 @@
 	    <TextView 
 	        android:id="@+id/label"
 	        android:layout_width="0dp"
-	        android:layout_weight=".2"
+	        android:layout_weight=".25"
 	        android:layout_height="wrap_content"
 	        android:text="Amount" />
 	
@@ -30,18 +30,8 @@
 	        android:windowSoftInputMode="stateVisible"
 	        android:inputType="number"
 	        android:layout_width="0dp"
-	        android:layout_weight=".55"
+	        android:layout_weight=".75"
 	        android:layout_height="wrap_content"/>
-
-	    
-	    <Button 
-	        android:id="@+id/add"
-	        android:text="Add"
-	        android:layout_weight=".25"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:onClick="add"
-	        />
     </LinearLayout>
     	<LinearLayout
 	    android:orientation="horizontal"
@@ -50,7 +40,7 @@
 	    	    <TextView 
 	        android:id="@+id/label"
 	        android:layout_width="0dp"
-	        android:layout_weight=".2"
+	        android:layout_weight=".25"
 	        android:layout_height="wrap_content"
 	        android:text="For: " />
 	    
@@ -58,8 +48,21 @@
 	        android:id="@+id/categoryField"
 	        android:windowSoftInputMode="stateVisible"
 	        android:layout_width="0dp"
-	        android:layout_weight=".8"
+	        android:layout_weight=".75"
 	        android:layout_height="wrap_content"/>
     		</LinearLayout>
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">		
+    	<Button 
+	        android:id="@+id/add"
+	        android:text="Add"
+	        android:layout_weight=".25"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:onClick="add"
+	        />
+    	</LinearLayout>
 
 </LinearLayout>

@@ -8,5 +8,6 @@
     <string name="pay">Pay</string>
     <string name="title_activity_paid">Paid</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_edit">Edit</string>
 
 </resources>

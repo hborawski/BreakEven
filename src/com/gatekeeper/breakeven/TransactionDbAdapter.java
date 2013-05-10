@@ -83,8 +83,19 @@ public class TransactionDbAdapter{
 		return sqlDb.query(TABLE_NAME,new String[]{KEY_ROW_ID,KEY_AMOUNT,KEY_CATEGORY},null,null,null,null,"date DESC");
 	}
 	
+	public Cursor fetchSingleTransaction(long id){ 
+		return sqlDb.query(TABLE_NAME, new String[]{KEY_AMOUNT, KEY_CATEGORY},"_id =?",new String[]{""+id},null,null,null,null);
+	}
+	
 	public void deleteTransaction(long id){
 		sqlDb.delete(TABLE_NAME, KEY_ROW_ID + "=" + id, null);
+	}
+	
+	public int editTransaction(long id, int amount, String description){
+		ContentValues values = new ContentValues();
+		values.put(KEY_AMOUNT, amount);
+		values.put(KEY_CATEGORY, description);
+		return sqlDb.update(TABLE_NAME, values, "_id =?", new String[]{""+id});
 	}
 	
 	public int getBalance(){

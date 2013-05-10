@@ -1,7 +1,5 @@
 package com.gatekeeper.breakeven;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,12 +17,13 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class MainActivity extends Activity {
 	public static final int PAID = 1;
 	public static final int PAY = 2;
+	public static final int UPDATE = 3;
 	private static int myBalance=0;
 	private Cursor myCursor;
 	private TransactionDbAdapter dbHelper;
 	
-	private static final int INSERT_ID = Menu.FIRST;
-    private static final int DELETE_ID = Menu.FIRST + 1;
+	private static final int DELETE_ID = Menu.FIRST;
+    private static final int EDIT_ID = Menu.FIRST + 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		//context = getApplicationContext();
@@ -81,6 +80,20 @@ public class MainActivity extends Activity {
 				fillData();
 				updateBalance();
 				break;
+			case 3:
+				Log.i("switch","case 3 - UPDATE");
+				int type = data.getIntExtra("TYPE", 1);
+				int amount;
+				if(type ==PAY){
+					amount = data.getIntExtra("VALUE",0)*-1;
+				}else{
+					amount = data.getIntExtra("VALUE",0);
+				}
+				String description = data.getStringExtra("CAT");
+				dbHelper.editTransaction(data.getLongExtra("id",0), amount, description);
+				fillData();
+				updateBalance();
+				break;
 			}
 		}
 	}
@@ -95,6 +108,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo ){
 		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0,EDIT_ID,0,R.string.menu_edit);
 		menu.add(0, DELETE_ID,0,R.string.menu_delete);
 	}
 	
@@ -107,6 +121,9 @@ public class MainActivity extends Activity {
                 fillData();
                 updateBalance();
                 return true;
+            case EDIT_ID:
+            	editTransaction(((AdapterContextMenuInfo)item.getMenuInfo()).id);
+            	return true;
         }
         return super.onContextItemSelected(item);
     }
@@ -127,7 +144,18 @@ public class MainActivity extends Activity {
 		
 	}
 
-	
+	public void editTransaction(long id){
+		Intent intent = new Intent(this, PaidActivity.class);
+		intent.putExtra("CALL", UPDATE);
+		intent.putExtra("id", id);
+		Cursor c = dbHelper.fetchSingleTransaction(id);
+		c.moveToFirst();
+		int amount = Integer.parseInt(c.getString(c.getColumnIndexOrThrow(TransactionDbAdapter.KEY_AMOUNT)));
+		String category = c.getString(c.getColumnIndexOrThrow(TransactionDbAdapter.KEY_CATEGORY));
+		intent.putExtra("amount", amount);
+		intent.putExtra("description", category);
+		startActivityForResult(intent, UPDATE);
+	}
 	
 	public void paid(View view){
 		Intent intent = new Intent(this, PaidActivity.class);

@@ -15,7 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class PaidActivity extends Activity {
-
+	private int type;
+	private long id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,12 +25,30 @@ public class PaidActivity extends Activity {
 		setupActionBar();
 
 		Intent intent = getIntent();
+		type = MainActivity.PAID;
+		id = intent.getLongExtra("id", 0);
 		if (intent.getIntExtra("CALL",0) == MainActivity.PAY){
 			Button b = (Button) findViewById(R.id.add);
 			TextView title = (TextView)findViewById(R.id.title);
-			title.setText("Pay up");
+			title.setText("Subtract");
 			b.setText("Remove");
+			type = MainActivity.PAY;
 			
+		}else if(intent.getIntExtra("CALL", 0) == MainActivity.UPDATE){
+			Button b = (Button) findViewById(R.id.add);
+			TextView title = (TextView)findViewById(R.id.title);
+			title.setText("Edit Transaction");
+			b.setText("Update");
+			EditText amount = (EditText)findViewById(R.id.paycheck);
+			int am = intent.getIntExtra("amount", 0);
+			if(am<0){
+				type = MainActivity.PAY;
+			}
+
+			amount.setText(""+Math.abs(am));
+			
+			EditText cat = (EditText) findViewById(R.id.categoryField);
+			cat.setText(intent.getStringExtra("description"));
 		}
 		EditText text = (EditText)findViewById(R.id.paycheck);
 		text.requestFocus();
@@ -79,6 +98,8 @@ public class PaidActivity extends Activity {
 		Intent data = new Intent();
 		data.putExtra("VALUE",value);
 		data.putExtra("CAT", category);
+		data.putExtra("TYPE", type);
+		data.putExtra("id", id);
 		if (getParent() == null) {
 		    setResult(Activity.RESULT_OK, data);
 		} else {

@@ -36,9 +36,11 @@ public class PaidActivity extends Activity {
 			
 		}else if(intent.getIntExtra("CALL", 0) == MainActivity.UPDATE){
 			Button b = (Button) findViewById(R.id.add);
+			b.setText("Update");
+			
 			TextView title = (TextView)findViewById(R.id.title);
 			title.setText("Edit Transaction");
-			b.setText("Update");
+			
 			EditText amount = (EditText)findViewById(R.id.paycheck);
 			int am = intent.getIntExtra("amount", 0);
 			if(am<0){

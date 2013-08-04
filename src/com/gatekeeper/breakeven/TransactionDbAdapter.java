@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class TransactionDbAdapter{
 	private static final String DATABASE_NAME = "TransactionDB";
-	private static final String TABLE_NAME = "transactions";
+	private static String TABLE_NAME = "transactions";
 	private static int DATABASE_VERSION = 1;
 	public static final String KEY_DATE = "date";
 	public static final String KEY_ROW_ID = "rowId";
@@ -111,4 +111,13 @@ public class TransactionDbAdapter{
 		return total;
 	}
 	
+	public boolean newProfile(String tableName){
+		
+		return true;
+	}
+	
+	public boolean changeTable(String tableName){
+		
+		return true;
+	}
 }

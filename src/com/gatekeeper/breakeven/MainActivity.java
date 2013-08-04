@@ -1,5 +1,8 @@
 package com.gatekeeper.breakeven;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,9 +13,11 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	public static final int PAID = 1;
@@ -29,14 +34,15 @@ public class MainActivity extends Activity {
 		//context = getApplicationContext();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		ListView list = (ListView)findViewById(R.id.mainList);
 		Log.i("main","created");
-		
+
 		dbHelper = new TransactionDbAdapter(this);
 		dbHelper.open();
 		
 		fillData();
+		fillProfiles();
 		updateBalance();
 		registerForContextMenu(list);
 		
@@ -135,6 +141,16 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	public void fillProfiles(){
+		final Spinner spin = (Spinner)findViewById(R.id.profiles);
+		List<String> list = new ArrayList<String>();
+		list.add("Transactions");
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spin.setAdapter(dataAdapter);
+		
+	}
+	
 
 	
 	public void updateBalance(){
@@ -170,5 +186,7 @@ public class MainActivity extends Activity {
 		startActivityForResult(intent, PAY);
 	}
 	
-	
+	public void openSettings(View v){
+		
+	}
 }

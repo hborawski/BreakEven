@@ -48,18 +48,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		/*
+		/* Needs to be moved to listfragment
 		ListView list = (ListView)findViewById(R.id.mainList);
-		Log.i("main","created");
-
-		
-		
-		fillData();
-		fillProfiles();
-		updateBalance();
 		registerForContextMenu(list);
 		*/
-		
 		dbHelper = new TransactionDbAdapter(this);
 		dbHelper.open();
 		
@@ -133,13 +125,11 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 				Log.i("balance", String.valueOf(myBalance));
 				Log.i("balance", String.valueOf(myBalance));
 				dbHelper.createTransaction(data.getIntExtra("VALUE",0), data.getStringExtra("CAT"));
-				fillData();
 				updateBalance();
 				break;
 			case 2:
 				Log.i("switch", "case 2 - PAY");
 				dbHelper.createTransaction(data.getIntExtra("VALUE",0)*-1, data.getStringExtra("CAT"));
-				fillData();
 				updateBalance();
 				break;
 			case 3:
@@ -153,7 +143,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 				}
 				String description = data.getStringExtra("CAT");
 				dbHelper.editTransaction(data.getLongExtra("id",0), amount, description);
-				fillData();
+
 				updateBalance();
 				break;
 			}
@@ -180,7 +170,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             case DELETE_ID:
                 AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
                 dbHelper.deleteTransaction(info.id);
-                fillData();
                 updateBalance();
                 return true;
             case EDIT_ID:
@@ -189,13 +178,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         }
         return super.onContextItemSelected(item);
     }
-	
-	public void fillData(){
-		myCursor = dbHelper.fetchAllTransactions();
-		final ListView list = (ListView)findViewById(R.id.mainList);
-		list.setAdapter(new RecentCursorAdapter(this,myCursor));
-		
-	}
 	
 	/*
 	public void fillProfiles(){
@@ -230,29 +212,5 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		intent.putExtra("description", category);
 		startActivityForResult(intent, UPDATE);
 	}
-	
-	public void paid(View view){
-		Intent intent = new Intent(this, PaidActivity.class);
-		intent.putExtra("CALL",PAID);
-		startActivityForResult(intent, PAID);
-		
-	}
-	
-	public void pay(View v){
-		Intent intent = new Intent(this, PaidActivity.class);
-		intent.putExtra("CALL",PAY);
-		startActivityForResult(intent, PAY);
-	}
-	
 
-	public void add(View v){		
-		View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
-		EditText field = (EditText) view.findViewById(R.id.paycheck);
-		int value = Integer.parseInt(field.getText().toString());
-		EditText catText= (EditText) view.findViewById(R.id.categoryField);
-		String category = catText.getText().toString();
-		dbHelper.createTransaction(value, category);
-		
-		Log.i("TransFrag","button");
-	}
 }

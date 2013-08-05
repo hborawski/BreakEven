@@ -3,10 +3,13 @@ package com.gatekeeper.breakeven;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -15,11 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends android.support.v4.app.FragmentActivity {
 	public static final int PAID = 1;
 	public static final int PAY = 2;
 	public static final int UPDATE = 3;
@@ -29,24 +33,76 @@ public class MainActivity extends Activity {
 	
 	private static final int DELETE_ID = Menu.FIRST;
     private static final int EDIT_ID = Menu.FIRST + 1;
+    
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		//context = getApplicationContext();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+		/*
 		ListView list = (ListView)findViewById(R.id.mainList);
 		Log.i("main","created");
 
-		dbHelper = new TransactionDbAdapter(this);
-		dbHelper.open();
+		
 		
 		fillData();
 		fillProfiles();
 		updateBalance();
 		registerForContextMenu(list);
+		*/
+		
+		dbHelper = new TransactionDbAdapter(this);
+		dbHelper.open();
 		
 	}
+	
+	public class SectionsPagerAdapter extends FragmentPagerAdapter{
+		
+		public SectionsPagerAdapter(FragmentManager fm){
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			switch(position){
+			case 0:
+				return new ListFragment();
+			case 1:
+				return new TransactionFragment();
+			default:
+				break;			
+			}
+			return new Fragment();
+		}
+
+		@Override
+		public int getCount() {
+			return 2;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position){
+			switch(position){
+			case 0:
+				return "Transactions";
+			case 1:
+				return "New Transaction";
+			default:
+				return "Broken";
+			}
+		}
+		
+	}
+	
 	@Override
 	protected void onStart(){
 		super.onStart();
@@ -141,6 +197,7 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	/*
 	public void fillProfiles(){
 		final Spinner spin = (Spinner)findViewById(R.id.profiles);
 		List<String> list = new ArrayList<String>();
@@ -150,6 +207,7 @@ public class MainActivity extends Activity {
 		spin.setAdapter(dataAdapter);
 		
 	}
+	*/
 	
 
 	
@@ -186,7 +244,15 @@ public class MainActivity extends Activity {
 		startActivityForResult(intent, PAY);
 	}
 	
-	public void openSettings(View v){
+
+	public void add(View v){		
+		View view = mViewPager.getChildAt(mViewPager.getCurrentItem());
+		EditText field = (EditText) view.findViewById(R.id.paycheck);
+		int value = Integer.parseInt(field.getText().toString());
+		EditText catText= (EditText) view.findViewById(R.id.categoryField);
+		String category = catText.getText().toString();
+		dbHelper.createTransaction(value, category);
 		
+		Log.i("TransFrag","button");
 	}
 }

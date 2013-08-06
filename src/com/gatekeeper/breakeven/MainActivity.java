@@ -156,7 +156,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+	/*
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo ){
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -164,6 +164,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		menu.add(0, DELETE_ID,0,R.string.menu_delete);
 	}
 	
+
 	@Override
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -178,6 +179,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         }
         return super.onContextItemSelected(item);
     }
+    */
 	
 	/*
 	public void fillProfiles(){

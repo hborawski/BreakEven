@@ -117,38 +117,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		Log.i("state","onRestart");
 	}
 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		if (resultCode == RESULT_OK){
-			switch (requestCode){
-			case 1:
-				Log.i("switch","case 1 - PAID");
-				Log.i("balance", String.valueOf(myBalance));
-				Log.i("balance", String.valueOf(myBalance));
-				dbHelper.createTransaction(data.getIntExtra("VALUE",0), data.getStringExtra("CAT"));
-				updateBalance();
-				break;
-			case 2:
-				Log.i("switch", "case 2 - PAY");
-				dbHelper.createTransaction(data.getIntExtra("VALUE",0)*-1, data.getStringExtra("CAT"));
-				updateBalance();
-				break;
-			case 3:
-				Log.i("switch","case 3 - UPDATE");
-				int type = data.getIntExtra("TYPE", 1);
-				int amount;
-				if(type ==PAY){
-					amount = data.getIntExtra("VALUE",0)*-1;
-				}else{
-					amount = data.getIntExtra("VALUE",0);
-				}
-				String description = data.getStringExtra("CAT");
-				dbHelper.editTransaction(data.getLongExtra("id",0), amount, description);
-
-				updateBalance();
-				break;
-			}
-		}
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,30 +124,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	/*
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo ){
-		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0,EDIT_ID,0,R.string.menu_edit);
-		menu.add(0, DELETE_ID,0,R.string.menu_delete);
-	}
-	
 
-	@Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case DELETE_ID:
-                AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-                dbHelper.deleteTransaction(info.id);
-                updateBalance();
-                return true;
-            case EDIT_ID:
-            	editTransaction(((AdapterContextMenuInfo)item.getMenuInfo()).id);
-            	return true;
-        }
-        return super.onContextItemSelected(item);
-    }
-    */
 	
 	/*
 	public void fillProfiles(){
@@ -192,14 +137,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		
 	}
 	*/
-	
 
-	
-	public void updateBalance(){
-		Log.i("update", String.valueOf(myBalance));
-		final TextView textView = (TextView) findViewById(R.id.balance);
-		textView.setText(String.valueOf(dbHelper.getBalance()));
-		
+	public void toList(){
+		mViewPager.setCurrentItem(0);
 	}
 
 	public void editTransaction(long id){

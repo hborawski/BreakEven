@@ -47,7 +47,7 @@ public class TransactionFragment extends Fragment{
 		EditText catText= (EditText) view.findViewById(R.id.categoryField);
 		String category = catText.getText().toString();
 		dbHelper.createTransaction(value, category);
-		
+		((MainActivity)getActivity()).toList();
 	}
 	
 	private void clearFields(){

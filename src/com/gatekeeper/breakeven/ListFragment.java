@@ -59,7 +59,7 @@ public class ListFragment extends Fragment{
                 AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
                 dbHelper.deleteTransaction(info.id);
                 updateBalance();
-                updateTransactionList();
+                updateTransactionList(dbHelper.fetchAllTransactions());
                 return true;
             case EDIT_ID:
             	//editTransaction(((AdapterContextMenuInfo)item.getMenuInfo()).id);
@@ -73,13 +73,12 @@ public class ListFragment extends Fragment{
 		super.onResume();
 		resumed = true;
 		updateBalance();
-		updateTransactionList();
+		updateTransactionList(dbHelper.fetchAllTransactions());
 	}
 	
-	private void updateTransactionList(){
-		myCursor = dbHelper.fetchAllTransactions();
+	private void updateTransactionList(Cursor c){
 		final ListView list = (ListView)getView().findViewById(R.id.mainList);
-		list.setAdapter(new RecentCursorAdapter(getActivity(),myCursor));
+		list.setAdapter(new RecentCursorAdapter(getActivity(),c));
 	}
 	
 	private void updateBalance(){
@@ -93,7 +92,7 @@ public class ListFragment extends Fragment{
 		if (isVisibleToUser) {
 			if(resumed){
 				updateBalance();
-				updateTransactionList();
+				updateTransactionList(dbHelper.fetchAllTransactions());
 			}
 		}else{
 			Log.i("list", "invisible");

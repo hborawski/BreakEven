@@ -1,7 +1,9 @@
 package com.gatekeeper.breakeven;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
 	public static final int PAID = 1;
@@ -141,18 +144,5 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	public void toList(){
 		mViewPager.setCurrentItem(0);
 	}
-	/*
-	public void editTransaction(long id){
-		Intent intent = new Intent(this, PaidActivity.class);
-		intent.putExtra("CALL", UPDATE);
-		intent.putExtra("id", id);
-		Cursor c = dbHelper.fetchSingleTransaction(id);
-		c.moveToFirst();
-		int amount = Integer.parseInt(c.getString(c.getColumnIndexOrThrow(TransactionDbAdapter.KEY_AMOUNT)));
-		String category = c.getString(c.getColumnIndexOrThrow(TransactionDbAdapter.KEY_CATEGORY));
-		intent.putExtra("amount", amount);
-		intent.putExtra("description", category);
-		startActivityForResult(intent, UPDATE);
-	}
-	*/
+
 }

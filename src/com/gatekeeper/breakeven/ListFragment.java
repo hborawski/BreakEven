@@ -1,12 +1,14 @@
 package com.gatekeeper.breakeven;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,6 +95,8 @@ public class ListFragment extends Fragment{
 			if(resumed){
 				updateBalance();
 				updateTransactionList(dbHelper.fetchAllTransactions());
+				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getView().findViewById(R.id.mainList).getWindowToken(), 0);
 			}
 		}else{
 			Log.i("list", "invisible");

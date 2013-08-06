@@ -48,7 +48,7 @@ public class ListFragment extends Fragment{
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo ){
 		super.onCreateContextMenu(menu, v, menuInfo);
-		//menu.add(0,EDIT_ID,0,R.string.menu_edit);
+		menu.add(0,EDIT_ID,0,R.string.menu_edit);
 		menu.add(0, DELETE_ID,0,R.string.menu_delete);
 	}
 	
@@ -62,7 +62,7 @@ public class ListFragment extends Fragment{
                 updateTransactionList(dbHelper.fetchAllTransactions());
                 return true;
             case EDIT_ID:
-            	//editTransaction(((AdapterContextMenuInfo)item.getMenuInfo()).id);
+            	((MainActivity)getActivity()).editTransaction(((AdapterContextMenuInfo)item.getMenuInfo()).id);
             	return true;
         }
         return super.onContextItemSelected(item);

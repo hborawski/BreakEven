@@ -95,6 +95,7 @@ public class TransactionDbAdapter{
 		ContentValues values = new ContentValues();
 		values.put(KEY_AMOUNT, amount);
 		values.put(KEY_CATEGORY, description);
+		Log.i("update", ""+id +" "+amount+" "+description);
 		return sqlDb.update(TABLE_NAME, values, "_id =?", new String[]{""+id});
 	}
 	

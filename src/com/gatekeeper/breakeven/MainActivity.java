@@ -1,9 +1,5 @@
 package com.gatekeeper.breakeven;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,36 +7,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
 	public static final int PAID = 1;
 	public static final int PAY = 2;
 	public static final int UPDATE = 3;
-	private static int myBalance=0;
-	private Cursor myCursor;
 	private TransactionDbAdapter dbHelper;
-	
-	private static final int DELETE_ID = Menu.FIRST;
-    private static final int EDIT_ID = Menu.FIRST + 1;
-    
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    
+    //Terrible workaround
+    private long editId;
     
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//context = getApplicationContext();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -48,12 +31,11 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		/* Needs to be moved to listfragment
-		ListView list = (ListView)findViewById(R.id.mainList);
-		registerForContextMenu(list);
-		*/
+
 		dbHelper = new TransactionDbAdapter(this);
 		dbHelper.open();
+		
+		this.editId = Long.valueOf("-1");
 		
 	}
 	
@@ -137,11 +119,29 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		
 	}
 	*/
-
+	public void editTransaction(long id){
+		Cursor c = dbHelper.fetchSingleTransaction(id);
+		c.moveToFirst();
+		int amount = Integer.parseInt(c.getString(c.getColumnIndexOrThrow(TransactionDbAdapter.KEY_AMOUNT)));
+		String category = c.getString(c.getColumnIndexOrThrow(TransactionDbAdapter.KEY_CATEGORY));
+		FragmentPagerAdapter fragmentPagerAdapter = (FragmentPagerAdapter) mViewPager.getAdapter();
+		TransactionFragment frag = (TransactionFragment) fragmentPagerAdapter.getItem(1);
+		View v = findViewById(R.id.trans_frag);
+		mViewPager.setCurrentItem(1);
+		this.editId = id;
+		frag.editTransaction(id, amount, category, v);
+	}
+	
+	public long getId(){
+		return this.editId;
+	}
+	public void clearId(){
+		this.editId = Long.valueOf("-1");
+	}
 	public void toList(){
 		mViewPager.setCurrentItem(0);
 	}
-
+	/*
 	public void editTransaction(long id){
 		Intent intent = new Intent(this, PaidActivity.class);
 		intent.putExtra("CALL", UPDATE);
@@ -154,5 +154,5 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		intent.putExtra("description", category);
 		startActivityForResult(intent, UPDATE);
 	}
-
+	*/
 }

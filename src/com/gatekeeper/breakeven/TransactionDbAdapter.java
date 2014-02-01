@@ -69,6 +69,10 @@ public class TransactionDbAdapter{
 		dbHelper.close();
 	}
 	
+	public void clear(){
+		sqlDb.delete(TABLE_NAME, null, null);
+	}
+	
 	
 	public long createTransaction(int amount, String category){
 		ContentValues values = new ContentValues();

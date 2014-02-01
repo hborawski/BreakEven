@@ -1,17 +1,15 @@
 package com.gatekeeper.breakeven;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
 	public static final int PAID = 1;
@@ -109,7 +107,20 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	/*
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()){
+		case R.id.menu_clear:
+			this.clearList();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		
+		}
+	}
+	*/
 	
 	/*
 	public void fillProfiles(){
@@ -133,6 +144,15 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		mViewPager.setCurrentItem(1);
 		this.editId = id;
 		frag.editTransaction(id, amount, category, v);
+	}
+	
+	public void clearList(){
+		dbHelper.clear();
+		FragmentPagerAdapter fragmentPagerAdapter = (FragmentPagerAdapter) mViewPager.getAdapter();
+		ListFragment frag = (ListFragment) fragmentPagerAdapter.getItem(0);
+		View v = findViewById(R.id.list_frag);
+		//frag.updateBalance(v);
+		frag.updateTransactionList(dbHelper.fetchAllTransactions(), v);
 	}
 	
 	public long getId(){

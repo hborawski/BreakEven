@@ -78,14 +78,28 @@ public class ListFragment extends Fragment{
 		updateTransactionList(dbHelper.fetchAllTransactions());
 	}
 	
-	private void updateTransactionList(Cursor c){
-		final ListView list = (ListView)getView().findViewById(R.id.mainList);
-		list.setAdapter(new RecentCursorAdapter(getActivity(),c));
+	public void updateTransactionList(Cursor c){
+		this.updateTransactionList(c, null);
+	}
+	public void updateTransactionList(Cursor c, View v){
+		if( v == null){ v= getView(); }
+		final ListView list = (ListView)v.findViewById(R.id.mainList);
+		list.setAdapter(new RecentCursorAdapter(getActivity(), c));
 	}
 	
-	private void updateBalance(){
-		final TextView textView = (TextView) getView().findViewById(R.id.balance);
-		textView.setText(String.valueOf(dbHelper.getBalance()));
+	public void updateBalance(){
+		this.updateBalance(null);
+	}
+	
+	public void updateBalance(View v){
+		if( v == null){ v= getView(); }
+		final TextView textView = (TextView) v.findViewById(R.id.balance);
+		if(dbHelper == null){
+			dbHelper = new TransactionDbAdapter(getActivity());
+			dbHelper.open();
+		}
+		String value = String.valueOf(dbHelper.getBalance());
+		textView.setText(value);
 	}
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
